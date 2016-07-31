@@ -48,16 +48,18 @@ public class TurretScript : MonoBehaviour {
 			Vector3 newdir = Vector3.RotateTowards (transform.forward, targetdir, step, 0.0F);
 			//rotate towards the newdir
 			transform.rotation = Quaternion.LookRotation (newdir);
-
+		}
 
 			//if we have a target & were not firing then we need to shoot!
-			if (!firing) {
+			if (!firing && currenttarget != null) {
 				//invoke a repeating rate, also add the new dir to be parsed over
 				InvokeRepeating ("Shoot", 0, shootrate);
 				//say that firing is true as we are now firing
 				firing = true;
+			} else {
+				firing = false;
 			}
-		}
+		
 	}
 
 
@@ -66,6 +68,8 @@ public class TurretScript : MonoBehaviour {
 		Debug.Log ("Scanning");
 		//setting current target as null
 		currenttarget = null;
+		//wiping the currentenemies list
+		CurrentEnemies = null;
 		//refreshing the current enemies list
 		CurrentEnemies = GameObject.FindGameObjectsWithTag ("Enemy");
 
