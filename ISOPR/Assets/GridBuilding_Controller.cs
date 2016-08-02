@@ -14,24 +14,33 @@ public class GridBuilding_Controller : MonoBehaviour {
 
     private int griditemsdeactivated;
 
+    public bool locked;
+
+    
+    private AudioSource[] AudioSources;
 	// Use this for initialization
 	void Start () {
-	
-	}
+        //COMMENT THIS HARRY
+        AudioSources = GetComponents<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	if(griditemsdeactivated >= Grid.Length)
+        if (!locked)
         {
-            
-            GridCanvas.transform.position = new Vector3(GridCanvas.transform.position.x, GridCanvas.transform.position.y + 1, GridCanvas.transform.position.z);
-            foreach(Transform gridpiece in GridCanvas.transform)
+            if (griditemsdeactivated >= Grid.Length)
             {
-                gridpiece.gameObject.SetActive(true);
+
+                GridCanvas.transform.position = new Vector3(GridCanvas.transform.position.x, GridCanvas.transform.position.y + 1, GridCanvas.transform.position.z);
+                foreach (Transform gridpiece in GridCanvas.transform)
+                {
+                    gridpiece.gameObject.SetActive(true);
+                }
+                griditemsdeactivated = 0;
+                return;
             }
-            griditemsdeactivated = 0;
-            return;
         }
+        Debug.Log(locked);
 	}
 
 
@@ -50,10 +59,14 @@ public class GridBuilding_Controller : MonoBehaviour {
         if (CurrentItem != null)
         {
             button.gameObject.SetActive(false);
-            griditemsdeactivated++;
+            
         }
     }
 
+    public void GridClickSound()
+    {
+        AudioSources[1].Play();
+    }
 
     public void BuildBlock(int GridBlock)
     {
@@ -69,15 +82,24 @@ public class GridBuilding_Controller : MonoBehaviour {
 
     public IEnumerator TweenCube(GameObject tweener, GameObject GridBlock)
     {
+        
+
         Vector3 brickpos = new Vector3(GridBlock.transform.position.x, GridBlock.transform.position.y + 1, GridBlock.transform.position.z);
 
         while (Vector3.Distance(tweener.transform.position, GridBlock.transform.position) > 1)
         {
             tweener.transform.Translate(Vector3.down * Time.deltaTime * 3);
+            locked = true;
             yield return new WaitForSeconds(.03F);
+            
         }
-
-        StopCoroutine("Tweener");
+        AudioSources[0].Play();
+        griditemsdeactivated++;
+        if (griditemsdeactivated >= Grid.Length)
+        {
+            locked = false;
+        }
+        
     }
 
 }
