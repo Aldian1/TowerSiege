@@ -51,6 +51,16 @@ public class GridBuilding_Controller : MonoBehaviour {
         {
             CurrentItem = BlockTypes[0];
         }
+
+        if(button.name == "TurretBlock")
+        {
+
+        }
+        if(button.name == "Cancel")
+        {
+            CurrentItem = null;
+        }
+
     }
 
 
