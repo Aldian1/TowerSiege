@@ -18,10 +18,12 @@ public class TurretScript : MonoBehaviour {
 
 	private GameObject bullet;
 
+    public bool TurretSlowRotation;
 
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
 		//Load bullet resource
 		bullet = Resources.Load("Bullet") as GameObject;
 		//repeat the scan
@@ -37,6 +39,18 @@ public class TurretScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
+        if(TurretSlowRotation == true)
+        {
+
+            transform.Rotate(0, 2.5F, 0);
+        }
+        else
+        {
+            transform.Rotate(0, 6, 0);
+        }
 
 		//if we have a current target then run
 		if (currenttarget != null) {
