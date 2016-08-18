@@ -8,7 +8,7 @@ public class MissileScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //int u = Random.Range
-        InvokeRepeating("Shoot", 0, 10);
+        InvokeRepeating("Shoot", 0, Random.Range(10, 20));
 	}
 	
 	// Update is called once per frame

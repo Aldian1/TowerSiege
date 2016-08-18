@@ -16,7 +16,7 @@ public class TurretScript : MonoBehaviour {
 
 	private Transform shootshot;
 
-	private GameObject bullet;
+	private GameObject bullet,TurretRings;
 
     public bool TurretSlowRotation;
 
@@ -24,6 +24,14 @@ public class TurretScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        //turret rings find
+        TurretRings = transform.GetChild(1).gameObject;
+
+        if(TurretRings == null)
+        {
+            Debug.Log("Cant Find my Turret Rings to Rotate! = " + transform.name);
+        }
 		//Load bullet resource
 		bullet = Resources.Load("Bullet") as GameObject;
 		//repeat the scan
@@ -46,6 +54,7 @@ public class TurretScript : MonoBehaviour {
         {
 
             transform.Rotate(0, 2.5F, 0);
+            TurretRings.transform.Rotate(0, -10F, 0);
         }
         else
         {

@@ -12,13 +12,13 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         float input = Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log(input);
+       // Debug.Log(input);
         if(Input.GetKey(KeyCode.Mouse0))
         {
-            if(!sizeofcm < 6.76F)
-            {
-
-            }
+          //  if(!sizeofcm < 6.76F)
+       //     {
+//
+          //  }
         }
     }
 }
