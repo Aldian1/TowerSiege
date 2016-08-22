@@ -4,21 +4,27 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
 
-    private float sizeofcm;
-    void Start()
+    Camera cam;
+    public float MaxZoom, MinZoom;
+
+    public void Start()
     {
-        sizeofcm = Camera.main.orthographicSize;
+        //get the camera
+        cam = this.gameObject.GetComponent<Camera>();
     }
-    void Update()
+
+    public void Update()
     {
-        float input = Input.GetAxis("Mouse ScrollWheel");
-       // Debug.Log(input);
-        if(Input.GetKey(KeyCode.Mouse0))
+        float i = Input.GetAxis("Mouse ScrollWheel");
+
+        if (i > 0 && cam.orthographicSize > MinZoom)
         {
-          //  if(!sizeofcm < 6.76F)
-       //     {
-//
-          //  }
+            cam.orthographicSize -= .5F;
+        }
+
+        if (i < 0 && cam.orthographicSize < MaxZoom)
+        {
+            cam.orthographicSize += .5F;
         }
     }
 }
