@@ -16,6 +16,9 @@ public class SceneController_ : MonoBehaviour {
     //the main parent of all the island objects
     public GameObject IslandParent;
 
+    //tells us whether we should be rotating the island or not
+    private bool rotateisland;
+
     // Use this for initialization
     void Start () {
 		
@@ -24,7 +27,15 @@ public class SceneController_ : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-	}
+
+        //rotates the island if we have pressed the button and we are at 0 rotation
+        if(rotateisland == true && IslandParent.transform.rotation.eulerAngles.y <= 180)
+        { IslandParent.transform.Rotate(0, 1, 0);  }
+        
+        
+
+        
+    }
 
     void OnGUI()
     {
@@ -77,13 +88,14 @@ public class SceneController_ : MonoBehaviour {
     //rotates the island so we can see the other side
     public void RotateIsland()
     {
-     if(IslandParent.transform.rotation.y < 180)
+        //simple if statement to determine if we have already rotated the island or not
+        if (rotateisland == false)
         {
-            IslandParent.transform.Rotate(0,180,0);
+            rotateisland = true;
         }
         else
         {
-            IslandParent.transform.Rotate(0, 0, 0);
+            rotateisland = false;
         }
     }
 }
