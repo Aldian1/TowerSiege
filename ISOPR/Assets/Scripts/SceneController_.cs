@@ -31,7 +31,12 @@ public class SceneController_ : MonoBehaviour {
         //rotates the island if we have pressed the button and we are at 0 rotation
         if(rotateisland == true && IslandParent.transform.rotation.eulerAngles.y <= 180)
         { IslandParent.transform.Rotate(0, 1, 0);  }
-        
+
+
+        //NEW WAY TO DO CAMERA ROTATIONS LOOK INTO THIS
+
+     // transform.LookAt(IslandParent.transform);
+      // transform.Translate(Vector3.right * Time.deltaTime * 100);
         
 
         

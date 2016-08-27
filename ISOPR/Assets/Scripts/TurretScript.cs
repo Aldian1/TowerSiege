@@ -14,9 +14,9 @@ public class TurretScript : MonoBehaviour {
 
 	public float shootrate,BulletSpeed;
 
-	private Transform shootshot;
+	public Transform shootshot;
 
-	private GameObject bullet,TurretRings;
+	public GameObject bullet,TurretRings;
 
     public bool TurretSlowRotation;
 
@@ -25,7 +25,6 @@ public class TurretScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        //turret rings find
         TurretRings = transform.GetChild(1).gameObject;
 
         if(TurretRings == null)
@@ -37,7 +36,7 @@ public class TurretScript : MonoBehaviour {
 		//repeat the scan
 		InvokeRepeating ("ReScan", 0, RescanRate);
 		//get the shootshot pos
-		shootshot = transform.GetChild(0).FindChild("ShotSpot");
+		shootshot = transform.FindChild("ShotSpot");
 		//if we cant find it put up a warning message
 		if (shootshot == null) {
 			Debug.Log ("Warning! Cannot find turret child");
@@ -53,12 +52,12 @@ public class TurretScript : MonoBehaviour {
         if(TurretSlowRotation == true)
         {
 
-            transform.Rotate(0, 2.5F, 0);
+           
             TurretRings.transform.Rotate(0, -10F, 0);
         }
         else
         {
-            transform.Rotate(0, 6, 0);
+            TurretRings.transform.Rotate(0, -10F, 0);
         }
 
 		//if we have a current target then run
@@ -74,13 +73,11 @@ public class TurretScript : MonoBehaviour {
 		}
 
 			//if we have a target & were not firing then we need to shoot!
-			if (!firing && currenttarget != null) {
+			if (currenttarget != null && !firing) {
 				//invoke a repeating rate, also add the new dir to be parsed over
 				InvokeRepeating ("Shoot", 0, shootrate);
+                firing = true;
 				//say that firing is true as we are now firing
-				firing = true;
-			} else {
-				firing = false;
 			}
 		
 	}
@@ -99,7 +96,7 @@ public class TurretScript : MonoBehaviour {
 		//searching through the list to find the closest match
 		for (int i = 0; i < CurrentEnemies.Length; i++) {
 			//checking the distance of object
-			if (Vector3.Distance (CurrentEnemies [i].transform.position, this.transform.position) < 5) {
+			if (Vector3.Distance (CurrentEnemies [i].transform.position, this.transform.position) > 5) {
 				//setting the current target as the current searched enemie
 				currenttarget = CurrentEnemies [i];
 			}
@@ -113,27 +110,11 @@ public class TurretScript : MonoBehaviour {
 
 
 
-		//instantiate the bullet
-		GameObject go = Instantiate (bullet, shootshot.position, Quaternion.identity) as GameObject;
+        //instantiate the bullet
+        GameObject go = Instantiate(bullet, shootshot.position, Quaternion.identity) as GameObject;
+        go.GetComponent<BulletScript>().Fire(currenttarget.transform, BulletSpeed);
+       
+        //get the rigidbody of the bullet and add a force behind it
 
-
-		//////REFACTOR//////////
-
-		//get the direction of the target base on our pos
-		Vector3 targetdir = currenttarget.transform.position - go.transform.position;
-		//create a float to incorporate our ROTspeed and smooth it by time.deltatime
-		float step = ROTspeed * Time.deltaTime;
-		//take the new dir and define it
-		Vector3 newdir = Vector3.RotateTowards (go.transform.forward, targetdir, step, 0.0F);
-		//rotate te bullet towards the enemy
-		go.transform.rotation = Quaternion.LookRotation (newdir);
-
-
-
-
-
-
-		//get the rigidbody of the bullet and add a force behind it
-		go.GetComponent<Rigidbody> ().AddForce (transform.forward * BulletSpeed * Time.deltaTime);
-	}
+    }
 }

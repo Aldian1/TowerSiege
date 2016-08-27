@@ -63,7 +63,14 @@ public class GridDetector : MonoBehaviour
             yield return new WaitForSeconds(.03F);
 
         }
+
+        if (tweener.GetComponent<TurretScript>())
+        {
+            tweener.GetComponent<TurretScript>().enabled = true;
+        }
+        tweener.SetActive(true);
         this.enabled = false;
+
 
     }
 
@@ -75,6 +82,9 @@ public class GridDetector : MonoBehaviour
         GameObject go = Instantiate(SceneController.CurrentlySelected, pos, Quaternion.identity) as GameObject;
         StartCoroutine("TweenCube", go);
         go.transform.parent = this.gameObject.transform;
+       
+        go.GetComponent<GridDetector>().identifier = this.identifier;
+        
 
         //determine the rotation of the object 
         //set by designer when importing models
